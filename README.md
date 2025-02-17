@@ -1,0 +1,1 @@
+# SolvingTheQuadraticEquation(lab1)
