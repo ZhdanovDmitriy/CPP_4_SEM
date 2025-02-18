@@ -1,0 +1,11 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/SolvingTheQuadraticEquation(lab1)
+/x64/Debug
+/SolvingT.8bb239ab/x64/Debug/SolvingT.8bb239ab.tlog
+/SolvingT.8bb239ab/x64/Debug
+/SolvingTheQuadraticEquation(lab1).vcxproj.user
+/.gitignore
+/.gitignore
