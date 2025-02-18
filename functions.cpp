@@ -1,8 +1,8 @@
 #include "functions.h"
 
-std::vector<int> getCoefficients(std::string str) {
+std::vector<long double> getCoefficients(std::string str) {
     str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
-    std::vector<int> coefficients;
+    std::vector<long double> coefficients;
 
     std::smatch match;
     // Регулярное выражение:
@@ -16,7 +16,7 @@ std::vector<int> getCoefficients(std::string str) {
     if (std::regex_match(str, match, pattern)) {
         // Группа 1: коэффициент a
         std::string a_str = match[1].str();
-        int a = 0;
+        long double a = 0;
         if (a_str.empty() || a_str == "+")
             a = 1;
         else if (a_str == "-")
@@ -25,7 +25,7 @@ std::vector<int> getCoefficients(std::string str) {
             a = std::stoi(a_str);
 
         // Группа 2: коэффициент b (опционально)
-        int b = 0;
+        long double b = 0;
         if (match[2].matched) {
             std::string b_str = match[2].str();
             if (b_str == "+" || b_str == "")
@@ -40,7 +40,7 @@ std::vector<int> getCoefficients(std::string str) {
         }
 
         // Группа 3: свободный член слева от знака "=" (опционально)
-        int c_left = 0;
+        long double c_left = 0;
         if (match[4].matched) {
             c_left = std::stoi(match[4].str());
         }
@@ -49,9 +49,9 @@ std::vector<int> getCoefficients(std::string str) {
         }
 
         // Группа 4: значение правой части уравнения
-        int right_side = std::stoi(match[5].str());
+        long double right_side = std::stoi(match[5].str());
 
-        int c = c_left - right_side;
+        long double c = c_left - right_side;
         coefficients = { a, b, c };
 
         std::cout << "a = " << a << std::endl;
@@ -64,3 +64,10 @@ std::vector<int> getCoefficients(std::string str) {
 
     return coefficients;
 }
+
+std::pair<long double, long double> solveQuadraticEquation(std::vector<long double> coefficients) {
+    if (coefficients[0] == 0){
+        std::cout << "Not a quadratic equation" << std::endl;
+        return { -1, -1 };
+    }
+};

@@ -6,4 +6,5 @@
 #include <vector>
 #include <regex>
 
-std::vector<int> getCoefficients(std::string str);
+std::vector<long double> getCoefficients(std::string str);
+std::pair<long double, long double> solveQuadraticEquation(std::vector<long double> coefficients);
