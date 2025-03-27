@@ -1,8 +1,9 @@
 #include "functions.h"
 
+
+
 int main() {
     std::string str;
-    printHead();
     std::getline(std::cin, str);
     std::vector<long double> coefficients = getCoefficients(str);
     if (isCorrectQuadraticEquation(coefficients)) {
