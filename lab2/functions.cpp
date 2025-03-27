@@ -93,7 +93,7 @@ std::pair<long double, long double> solveQuadraticEquation(std::vector<long doub
     }
 };
 
-std::pair<long double, long double> Student::solveQuadEquatStudent(std::vector<long double>& const coefficients, std::string type, int solveChance) {
+std::pair<long double, long double> Student::solveQuadEquatStudent(std::vector<long double>& const coefficients, const std::string type, int solveChance) {
     if (type == "cunning") {
         return {-0, 0};
     }
@@ -123,7 +123,7 @@ std::vector<std::pair<long double, long double>> Student::solveExamStudent(const
     std::ifstream file(filename);
 
     if (!file) {
-        std::cerr << "Ошибка: не удалось открыть файл " << filename << std::endl;
+        std::cerr << "Oppening error" << filename << std::endl;
         return solutions;
     }
 
@@ -143,19 +143,19 @@ std::vector<std::pair<long double, long double>> Student::solveExamStudent(const
     return solutions;
 }
 
-
-
 std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const std::string& filename) {
     std::vector<std::pair<long double, long double>> solutions;
     std::ifstream file(filename);
 
     if (!file) {
-        std::cerr << "Ошибка: не удалось открыть файл " << filename << std::endl;
+        std::cerr << "Oppening error" << filename << std::endl;
         return solutions;
     }
 
+    int cnt = 0;
     std::string equation;
     while (std::getline(file, equation)) {
+        cnt++;
         std::vector<long double> coefficients = getCoefficients(equation);
 
         if (isCorrectQuadraticEquation(coefficients)) {
@@ -166,6 +166,40 @@ std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const
         }
     }
 
+    exampleCount = cnt;
     file.close();
     return solutions;
+}
+
+void Teacher::evaluateWorks(const std::string name, std::vector<std::pair<long double, long double>>& studentAns, std::vector<std::pair<long double, long double>>& ans) {
+    int cnt = 0;
+    for (int i = 0; i != ans.size(); ++i) {
+        if (std::fabs(studentAns[i].first - ans[i].first) < EPS && std::fabs(studentAns[i].second - ans[i].second) < EPS) {
+            cnt++;
+        }
+    }
+    results.push_back({name, cnt});
+}
+
+void Teacher::publishResults() {
+    int cnt = 0;
+    std::cout << "N |   NAME  |  points  |  grade  |" << std::endl;
+    std::cout << "---------------------------------" << std::endl;
+    for (auto& elem : results) {
+        int grade;
+        if (elem.second / exampleCount >= 0.90) {
+            grade = 5;
+        }
+        else if(elem.second / exampleCount >= 0.75 && elem.second / exampleCount < 0.90) {
+            grade = 4;
+        }
+        else if (elem.second / exampleCount >= 0.60 && elem.second / exampleCount < 0.75) {
+            grade = 3;
+        }
+        else {
+            grade = 2;
+        }
+        cnt++;
+        std::cout << cnt << ".  " << elem.first << " | " << elem.second << " / " << exampleCount << " | " << grade << std::endl;
+    }
 }

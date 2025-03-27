@@ -10,21 +10,20 @@
 #include <cmath>
 #include <random>
 
+#define EPS 0.1
+
 class Teacher {
 private:
-    std::vector<int> results;
-    std::vector<std::string> names;
+    std::vector<std::pair<std::string, int>> results;
 public:
-    std::pair<long double, long double> solveQuadEquatTeacher(std::vector<long double>& const coefficients) {
-        return isCorrectQuadraticEquation ? solveQuadraticEquation(coefficients) : std::make_pair(-1.0L, -1.0L);
-    }
     std::vector<std::pair<long double, long double>> solveExamTeacher(const std::string& filename);
+    void evaluateWorks(const std::string name, std::vector<std::pair<long double, long double>>& studentAns, std::vector<std::pair<long double, long double>>& ans);
 };
 
 class Student {
 private:
-    std::string name;
-    std::string type;
+    const std::string name;
+    const std::string type;
     int solveChance;
 public:
     Student(const std::string& name, const std::string& type) : name(name), type(type), solveChance(0) {
@@ -35,7 +34,7 @@ public:
             solveChance = dist(gen);
         }
     }
-    std::pair<long double, long double> solveQuadEquatStudent(std::vector<long double>& const coefficients, std::string type, int solveChance);
+    std::pair<long double, long double> solveQuadEquatStudent(std::vector<long double>& const coefficients,const std::string type, int solveChance);
     std::vector<std::pair<long double, long double>> solveExamStudent(const std::string& filename);
 };
 
