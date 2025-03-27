@@ -43,12 +43,6 @@ std::vector<long double> getCoefficients(std::string& const str) {
         long double c = c_left - right_side;
         coefficients = { a, b, c };
 
-        std::cout << "a = " << a << std::endl;
-        std::cout << "b = " << b << std::endl;
-        std::cout << "c = " << c << std::endl;
-    }
-    else {
-        std::cout << "Incorrect input format!" << std::endl;
     }
     return coefficients;
 }
@@ -58,21 +52,15 @@ bool isCorrectQuadraticEquation(std::vector<long double>& const coefficients) {
     long double b = coefficients[1];
     long double c = coefficients[2];
     if (a == 0 && b != 0) {
-        std::cout << "Not a quadratic equation" << std::endl;
-        std::cout << "But I know answer: " << (-c / b) << std::endl;
         return 0;
     }
     else if (a == 0 && b == 0 && c == 0) {
-        std::cout << "Not a quadratic equation" << std::endl;
-        std::cout << "Any x is suitable" << std::endl;
         return 0;
     }
     else if (b == 0 && -(c / a) < 0) {
-        std::cout << "No solutions" << std::endl;
         return 0;
     }
     else if (b * b - 4 * a * c < 0) {
-        std::cout << "No solutions" << std::endl;
         return 0;
     }
     else {
@@ -118,7 +106,7 @@ std::pair<long double, long double> Student::solveQuadEquatStudent(std::vector<l
 }
 
 
-std::vector<std::pair<long double, long double>> Student::solveExamStudent(const std::string& filename) {
+const std::vector<std::pair<long double, long double>> Student::solveExamStudent(const std::string& filename) {
     std::vector<std::pair<long double, long double>> solutions;
     std::ifstream file(filename);
 
@@ -143,7 +131,7 @@ std::vector<std::pair<long double, long double>> Student::solveExamStudent(const
     return solutions;
 }
 
-std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const std::string& filename) {
+const std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const std::string& filename) {
     std::vector<std::pair<long double, long double>> solutions;
     std::ifstream file(filename);
 
@@ -171,7 +159,7 @@ std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const
     return solutions;
 }
 
-void Teacher::evaluateWorks(const std::string name, std::vector<std::pair<long double, long double>>& studentAns, std::vector<std::pair<long double, long double>>& ans) {
+void Teacher::evaluateWorks(const std::string name, const std::vector<std::pair<long double, long double>>& studentAns, const std::vector<std::pair<long double, long double>>& ans) {
     int cnt = 0;
     for (int i = 0; i != ans.size(); ++i) {
         if (std::fabs(studentAns[i].first - ans[i].first) < EPS && std::fabs(studentAns[i].second - ans[i].second) < EPS) {
@@ -187,13 +175,14 @@ void Teacher::publishResults() {
     std::cout << "---------------------------------" << std::endl;
     for (auto& elem : results) {
         int grade;
-        if (elem.second / exampleCount >= 0.90) {
+        double percentage = static_cast<double>(elem.second) / exampleCount;
+        if (percentage >= 0.90) {
             grade = 5;
         }
-        else if(elem.second / exampleCount >= 0.75 && elem.second / exampleCount < 0.90) {
+        else if (percentage >= 0.75) {
             grade = 4;
         }
-        else if (elem.second / exampleCount >= 0.60 && elem.second / exampleCount < 0.75) {
+        else if (percentage >= 0.60) {
             grade = 3;
         }
         else {

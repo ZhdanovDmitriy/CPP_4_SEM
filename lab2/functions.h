@@ -14,18 +14,21 @@
 
 class Teacher {
 private:
+    int exampleCount;
     std::vector<std::pair<std::string, int>> results;
 public:
-    std::vector<std::pair<long double, long double>> solveExamTeacher(const std::string& filename);
-    void evaluateWorks(const std::string name, std::vector<std::pair<long double, long double>>& studentAns, std::vector<std::pair<long double, long double>>& ans);
+    Teacher(int exampleCount) : exampleCount(exampleCount) {};
+    const std::vector<std::pair<long double, long double>> solveExamTeacher(const std::string& filename);
+    void evaluateWorks(const std::string name,const std::vector<std::pair<long double, long double>>& studentAns,const std::vector<std::pair<long double, long double>>& ans);
+    void publishResults();
 };
 
 class Student {
 private:
-    const std::string name;
     const std::string type;
     int solveChance;
 public:
+    const std::string name;
     Student(const std::string& name, const std::string& type) : name(name), type(type), solveChance(0) {
         if (type == "diligent") {
             std::random_device rd;
@@ -35,7 +38,7 @@ public:
         }
     }
     std::pair<long double, long double> solveQuadEquatStudent(std::vector<long double>& const coefficients,const std::string type, int solveChance);
-    std::vector<std::pair<long double, long double>> solveExamStudent(const std::string& filename);
+    const std::vector<std::pair<long double, long double>> solveExamStudent(const std::string& filename);
 };
 
 std::vector<long double> getCoefficients(std::string& const str);
