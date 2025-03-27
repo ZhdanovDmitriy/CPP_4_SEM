@@ -57,6 +57,9 @@ bool isCorrectQuadraticEquation(std::vector<long double>& const coefficients) {
     else if (a == 0 && b == 0 && c == 0) {
         return 0;
     }
+    else if (c == 0) {
+        return 1;
+    }
     else if (b == 0 && -(c / a) < 0) {
         return 0;
     }
@@ -66,7 +69,6 @@ bool isCorrectQuadraticEquation(std::vector<long double>& const coefficients) {
     else {
         return 1;
     }
-
 }
 
 std::pair<long double, long double> solveQuadraticEquation(std::vector<long double>& const coefficients) {
@@ -90,7 +92,7 @@ std::pair<long double, long double> Student::solveQuadEquatStudent(std::vector<l
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dist(0, 100);
         int curr = dist(gen);
-        if (curr >= solveChance) {
+        if (solveChance >= curr) {
             return solveQuadraticEquation(coefficients);
         }
         else {
@@ -118,13 +120,18 @@ const std::vector<std::pair<long double, long double>> Student::solveExamStudent
     std::string equation;
     while (std::getline(file, equation)) {
         std::vector<long double> coefficients = getCoefficients(equation);
-
-        if (isCorrectQuadraticEquation(coefficients)) {
-            solutions.push_back(solveQuadEquatStudent(coefficients, type, solveChance));
+        if (type != "cunning") {
+            if (isCorrectQuadraticEquation(coefficients)) {
+                solutions.push_back(solveQuadEquatStudent(coefficients, type, solveChance));
+            }
+            else {
+                solutions.push_back({ -1, -1 });
+            }
         }
         else {
-            solutions.push_back({ -1, -1 });
+            solutions.push_back(solveQuadEquatStudent(coefficients, type, solveChance));
         }
+        
     }
 
     file.close();
@@ -171,8 +178,14 @@ void Teacher::evaluateWorks(const std::string name, const std::vector<std::pair<
 
 void Teacher::publishResults() {
     int cnt = 0;
-    std::cout << "N |   NAME  |  points  |  grade  |" << std::endl;
-    std::cout << "---------------------------------" << std::endl;
+
+    std::cout << std::setw(4) << std::left << "N"
+        << std::setw(15) << std::left << "names"
+        << std::setw(9) << std::left << "points"
+        << "    "
+        << std::setw(5) << std::left << "grade" << std::endl;
+    std::cout << "-------------------------------------" << std::endl;
+
     for (auto& elem : results) {
         int grade;
         double percentage = static_cast<double>(elem.second) / exampleCount;
@@ -188,7 +201,14 @@ void Teacher::publishResults() {
         else {
             grade = 2;
         }
+
         cnt++;
-        std::cout << cnt << ".  " << elem.first << " | " << elem.second << " / " << exampleCount << " | " << grade << std::endl;
+        std::cout << std::setw(4) << std::left << cnt
+            << std::setw(15) << std::left << elem.first
+            << std::setw(3) << std::left << elem.second
+            << "/" 
+            << std::setw(3) << std::left << exampleCount
+            << "        "
+            << std::setw(1) << std::left << grade << std::endl;
     }
 }

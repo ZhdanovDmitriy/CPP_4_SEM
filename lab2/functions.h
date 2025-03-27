@@ -9,6 +9,8 @@
 #include <regex>
 #include <cmath>
 #include <random>
+#include <map>
+#include <iomanip>
 
 #define EPS 0.1
 
@@ -33,7 +35,7 @@ public:
         if (type == "diligent") {
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_int_distribution<int> dist(0, 100);
+            std::uniform_int_distribution<int> dist(30, 100);
             solveChance = dist(gen);
         }
     }
