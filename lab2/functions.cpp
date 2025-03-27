@@ -92,3 +92,80 @@ std::pair<long double, long double> solveQuadraticEquation(std::vector<long doub
         return { (-b + std::sqrt(b * b - 4 * a * c)) / (2 * a) , (-b - std::sqrt(b * b - 4 * a * c)) / (2 * a) };
     }
 };
+
+std::pair<long double, long double> Student::solveQuadEquatStudent(std::vector<long double>& const coefficients, std::string type, int solveChance) {
+    if (type == "cunning") {
+        return {-0, 0};
+    }
+    else if (type == "diligent") {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> dist(0, 100);
+        int curr = dist(gen);
+        if (curr >= solveChance) {
+            return solveQuadraticEquation(coefficients);
+        }
+        else {
+            std::uniform_real_distribution<long double> dist(-100.0, 100.0);
+            long double ans1 = dist(gen);
+            long double ans2 = dist(gen);
+            return {ans1, ans2};
+        }
+    }
+    else if(type == "genius") {
+        return solveQuadraticEquation(coefficients);
+    }
+}
+
+
+std::vector<std::pair<long double, long double>> Student::solveExamStudent(const std::string& filename) {
+    std::vector<std::pair<long double, long double>> solutions;
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Ошибка: не удалось открыть файл " << filename << std::endl;
+        return solutions;
+    }
+
+    std::string equation;
+    while (std::getline(file, equation)) {
+        std::vector<long double> coefficients = getCoefficients(equation);
+
+        if (isCorrectQuadraticEquation(coefficients)) {
+            solutions.push_back(solveQuadEquatStudent(coefficients, type, solveChance));
+        }
+        else {
+            solutions.push_back({ -1, -1 });
+        }
+    }
+
+    file.close();
+    return solutions;
+}
+
+
+
+std::vector<std::pair<long double, long double>> Teacher::solveExamTeacher(const std::string& filename) {
+    std::vector<std::pair<long double, long double>> solutions;
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Ошибка: не удалось открыть файл " << filename << std::endl;
+        return solutions;
+    }
+
+    std::string equation;
+    while (std::getline(file, equation)) {
+        std::vector<long double> coefficients = getCoefficients(equation);
+
+        if (isCorrectQuadraticEquation(coefficients)) {
+            solutions.push_back(solveQuadraticEquation(coefficients));
+        }
+        else {
+            solutions.push_back({ -1, -1 });
+        }
+    }
+
+    file.close();
+    return solutions;
+}
